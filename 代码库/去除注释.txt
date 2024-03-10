@@ -1,0 +1,118 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int main()
+{
+	FILE* fp=fopen("D:/c/c/file_study/qusetion_C.txt","r");
+	int num;
+	scanf("%d",&num);
+
+	int row[5]={0};
+	int row_i[5]={0};
+	for(int i=0;i<5;i++)//获取代码所在行数
+	{
+		int k=0;
+		row_i[k]=fgetc(fp)-48;
+		k++;
+		for(;((row_i[k]=fgetc(fp)-48)+48)!='\n';k++){}
+		row_i[k]+=48;
+		int x=1;
+		for(int j=0;k-1-j>-1;x*=10,j++)
+		{
+			row[i]+=row_i[k-1-j]*x;
+		}
+		k=0;
+	}
+	int start=5;
+	if(num!=1)//获取指定代码的初始行
+	{
+		start=row[num-2];
+	}
+	char* gps=malloc(sizeof(char)*100);
+	for(int i=0;i<start-5;i++)//光标定位到指定代码的开始行
+	{
+		fgets(gps,100,fp);
+	}
+	char ch[200]={0};
+	int row_num=start;
+	int b1=0;//标记变量
+	int begin=0;
+	while(row_num<row[num-1])
+	{
+		for(int i=1;ch[i-1]!='\n';i++)//从“1”存起,不是“0”存起
+		{
+			ch[i]=fgetc(fp);
+		}
+		if(ch[1]!='#'&&begin==0)
+		{
+			row_num++;
+			continue;
+		}
+		begin=1;
+		int b2=0,b3=0;
+		for(int i=1,j=0;ch[i+j]!='\n';j++)//数组遍历检测注释关键词
+		{
+			int judge=0;
+			if((ch[i+j]=='/'&&ch[i+j+1]=='/')||(ch[i+j]=='/'&&ch[i+j+1]=='*'))//检测单行代码中的疑似注释,分为 0，1，2 型注释
+			{
+				judge=2;
+				for(int k=1;i+j-k>=1;k++)//对疑似注释进行判断
+				{
+					if(ch[i+j-k]!=' '&&ch[i+j-k]!=';'&&ch[i+j-k]!='\t')//判断为不是注释
+					{
+						judge=0;
+						break;
+					}
+					if(ch[i+j-k]==';')//判断为 1 型注释
+					{
+						judge=1;
+						break;
+					}
+				}
+				if(judge==2&&(ch[i+j]=='/'&&ch[i+j+1]=='*'))
+				{
+					b1=1;
+					break;
+				}
+				if(judge==1)
+				{
+					b2=i+j;
+					continue;
+				}
+			}
+			if(ch[i+j]=='*'&&ch[i+j+1]=='/')
+			{
+				b3=1;
+			}
+		}
+		if(b1==1)
+		{
+			if(b3==1)
+			{
+				b1=0;
+				printf("\n");
+			}
+			row_num++;
+			continue;
+		}
+		if(b2!=0)
+		{
+			for(int i=1;i<b2-1;i++)
+			{
+				printf("%c",ch[i]);
+			}
+		}
+		else
+		{
+			for(int i=1;ch[i]!='\n';i++)
+			{
+				printf("%c",ch[i]);
+			}
+		}
+		
+		row_num++;
+		printf("\n");
+	}
+	fclose(fp);
+	return 0;
+}

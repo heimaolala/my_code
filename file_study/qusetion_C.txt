@@ -1,0 +1,113 @@
+23
+47
+65
+85
+113
+/*
+	@Author: BUPT
+	@Date: 2010 8 26
+*/
+
+#include<stdio.h>
+
+int main()
+{
+	int a = 10 , b = 2 , c ;
+	c = a / b ; //I just want to test '/'
+	printf("I love programming C.\n") ; //"printf" is a useful function /*
+	printf("I hope you love it too!\n") ;
+	/*
+	//C is not always hard , if you love it , it will not treat you rough.
+	*/
+	return 0 ;
+}
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int main()
+{
+    FILE* fp=fopen("D:/c/c/file_study/file_write.c","w");
+    if(!fp)
+    {
+        printf("文件打开失败");
+        return -1;
+    }
+    char ch;
+    while(1)
+    {
+        scanf("%c",&ch);
+        if(ch=='@')
+        {
+            break;
+        }
+        fputc(ch,fp);
+    }
+    fclose(fp);
+    return 0;
+}
+/*
+	@Author: BUPT
+	@Date: 2010 8 26
+*/
+
+#include<stdio.h>
+
+int main()
+{
+	int a = 10 , b = 2 , c ;
+	c = a / b ; //I just want to test '/'
+	printf("I love programming C.\n") ; //"printf" is a useful function /*
+	printf("I hope you love it too!\n") ;
+	/*
+	//C is not always hard , if you love it , it will not treat you rough.
+	*/
+	return 0 ;
+}
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int main()
+{
+    FILE* fp=fopen("D:/c/c/file_study/fwrite.txt","r");
+    /* char a[5]={'x','x','x','x','x'};
+    int b[5]={1,2,3,4,5};
+    fwrite(a,sizeof(char),5,fp);
+    fwrite(b,sizeof(int),5,fp); */
+    char aa[5];
+    int bb[5];
+    fread(aa,sizeof(char),5,fp);
+    fread(bb,sizeof(int),5,fp);
+    printf("%s",aa);
+    for(int i=0;i<4;i++)
+        printf("%d",bb[i]);
+    fclose(fp);
+    return 0;
+}
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int main()
+{
+    FILE* fp=fopen("D:/c/c/file_study/row_read.txt","r");
+    if(!fp)
+    {
+        printf("文件初始化失败");
+        return -1;
+    }
+    char* p=malloc(sizeof(char)*100);
+    //指定读取第1+ 1 行；
+    for(int i=0;i<1;i++)
+    {
+        fgets(p,100,fp);
+    }
+    while(!feof(fp))
+    {
+        memset(p,0,100);
+        fgets(p,100,fp);
+        printf("%s",p);
+    }
+    printf("\n");
+    free(p);
+    fclose(fp);
+    return 0;
+}
